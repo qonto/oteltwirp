@@ -6,7 +6,7 @@ import (
 
 	"github.com/twitchtv/twirp"
 	"go.opentelemetry.io/otel/attribute"
-	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.20.0"
 )
 
 // spanInfo returns a span name and all appropriate attributes from the context

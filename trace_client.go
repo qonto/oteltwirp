@@ -6,7 +6,7 @@ import (
 
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/propagation"
-	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
+	"go.opentelemetry.io/otel/semconv/v1.20.0/httpconv"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -46,7 +46,7 @@ func (c *TraceHTTPClient) configure(cfg *config) {
 func (c *TraceHTTPClient) Do(r *http.Request) (*http.Response, error) {
 	ctx := r.Context()
 	name, attr := spanInfo(ctx)
-	attr = append(attr, semconv.HTTPClientAttributesFromHTTPRequest(r)...)
+	attr = append(attr, httpconv.ClientRequest(r)...)
 	ctx, span := c.tracer.Start(
 		ctx,
 		name,
@@ -59,7 +59,6 @@ func (c *TraceHTTPClient) Do(r *http.Request) (*http.Response, error) {
 
 	span.AddEvent(rpcEventName, trace.WithAttributes(RPCMessageTypeSent))
 	resp, err := c.client.Do(r)
-
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
@@ -72,7 +71,7 @@ func (c *TraceHTTPClient) Do(r *http.Request) (*http.Response, error) {
 	if resp.StatusCode >= 400 && c.includeClientErrors || resp.StatusCode >= 500 {
 		span.SetStatus(codes.Error, "")
 	}
-	span.SetAttributes(semconv.HTTPAttributesFromHTTPStatusCode(resp.StatusCode)...)
+	span.SetAttributes(httpconv.ClientResponse(resp)...)
 
 	// We want to track when the body is closed, meaning the server is done with
 	// the response.

@@ -6,9 +6,10 @@ import (
 	"strconv"
 
 	"github.com/twitchtv/twirp"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/propagation"
-	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.20.0"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -64,7 +65,10 @@ func (t *TraceServerHooks) finishTrace(ctx context.Context) {
 	status, haveStatus := twirp.StatusCode(ctx)
 	code, err := strconv.Atoi(status)
 	if haveStatus && err != nil {
-		span.SetAttributes(semconv.HTTPAttributesFromHTTPStatusCode(code)...)
+		span.SetAttributes(attribute.KeyValue{
+			Key:   semconv.HTTPStatusCodeKey,
+			Value: attribute.IntValue(code),
+		})
 	}
 	span.AddEvent(rpcEventName, trace.WithAttributes(RPCMessageTypeSent))
 	span.End()
