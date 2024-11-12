@@ -45,7 +45,7 @@ func (c *TraceHTTPClient) configure(cfg *config) {
 // making the actual request.
 func (c *TraceHTTPClient) Do(r *http.Request) (*http.Response, error) {
 	ctx := r.Context()
-	name, attr := spanInfo(ctx, r.RemoteAddr)
+	name, attr := spanInfo(ctx)
 	attr = append(attr, semconv.HTTPClientAttributesFromHTTPRequest(r)...)
 	ctx, span := c.tracer.Start(
 		ctx,

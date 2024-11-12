@@ -52,8 +52,7 @@ func (t *TraceServerHooks) startTraceSpan(ctx context.Context) (context.Context,
 // handleRequestRouted sets the operation name and attributes because we won't
 // know what it is until the RequestRouted hook.
 func (t *TraceServerHooks) handleRequestRouted(ctx context.Context) (context.Context, error) {
-	remoteAddr := ctx.Value(keyRemoteAddr).(string)
-	name, attr := spanInfo(ctx, remoteAddr)
+	name, attr := spanInfo(ctx)
 	span := trace.SpanFromContext(ctx)
 	span.SetName(name)
 	span.SetAttributes(attr...)
@@ -87,7 +86,6 @@ func WithTraceContext(handler http.Handler, opts ...Option) http.Handler {
 	cfg := newConfig(opts)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := cfg.propagator.Extract(r.Context(), propagation.HeaderCarrier(r.Header))
-		ctx = context.WithValue(ctx, keyRemoteAddr, r.RemoteAddr)
 		r = r.WithContext(ctx)
 		handler.ServeHTTP(w, r)
 	})
