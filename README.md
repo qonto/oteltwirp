@@ -11,7 +11,12 @@ The `oteltwirp` package creates an OpenTelemetry Twirp hook to use in your serve
 Where you are instantiating your Twirp server:
 
 ```go
-hooks := NewOpenTracingHooks()
+import (
+    oteltwirp "github.com/qonto/twirp-otel"
+    ...
+)
+
+hooks := oteltwirp.NewOpenTelemetryHooks()
 service := haberdasherserver.New()
 server := WithTraceContext(haberdasher.NewHaberdasherServer(service, hooks))
 log.Fatal(http.ListenAndServe(":8080", server))
@@ -22,5 +27,5 @@ log.Fatal(http.ListenAndServe(":8080", server))
 When instantiating your Twirp client:
 
 ```go
-client := haberdasher.NewHaberdasherProtobufClient(url, NewTraceHTTPClient(http.DefaultClient))
+client := haberdasher.NewHaberdasherProtobufClient(url, oteltwirp.NewTraceHTTPClient(http.DefaultClient))
 ```
