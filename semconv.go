@@ -4,7 +4,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 )
 
-const instrumentationName = "github.com/qonto/twirp-otel"
+const instrumentationName = "github.com/qonto/oteltwirp"
 
 // Semantic conventions for attribute keys for twirp.
 const (

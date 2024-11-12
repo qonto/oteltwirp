@@ -4,7 +4,7 @@ The `oteltwirp` package creates an OpenTelemetry Twirp hook to use in your serve
 
 ## Installation
 
-`go get -u github.com/qonto/twirp-otel`
+`go get -u github.com/qonto/oteltwirp`
 
 ## Server-side usage example
 
@@ -12,7 +12,7 @@ Where you are instantiating your Twirp server:
 
 ```go
 import (
-    oteltwirp "github.com/qonto/twirp-otel"
+    "github.com/qonto/oteltwirp"
     ...
 )
 

@@ -1,4 +1,4 @@
-module github.com/qonto/twirp-otel
+module github.com/qonto/oteltwirp
 
 go 1.23
 
