@@ -5,7 +5,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 )
 
-const instrumentationName = "github.com/chengjiagan/twirp-opentelemetry"
+const instrumentationName = "github.com/qonto/twirp-otel"
 
 // Semantic conventions for attribute keys for twirp.
 const (

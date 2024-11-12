@@ -1,4 +1,4 @@
-module github.com/chengjiagan/twirp-opentelemetry
+module github.com/qonto/twirp-otel
 
 go 1.17
 
